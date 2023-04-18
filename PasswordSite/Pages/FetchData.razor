@@ -1,0 +1,76 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Password</PageTitle>
+
+@using PasswordSite.Data
+
+<h1>Password Generator</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Random password</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Amount of characters: <input type="number"  min="8" max="18" @bind="length" /></td>
+            <td>Contains number(s): <input type="checkbox" @bind="numbers" /></td>
+            <td>Contains capital letter(s): <input type="checkbox" @bind="caps" /></td>
+            <td>Contains special character(s): <input type="checkbox" @bind="chars" /></td>
+            <button class="btn btn-outline-dark" @onclick=(CreatePassword)>Create Password</button>
+        </tr>
+        <tr>
+            @if (isPasswordCreated)
+            {
+                <td>Password: <a class="Blurred">@pass</a></td>
+            }
+        </tr>
+    </tbody>
+</table>
+
+@code {
+    string pass = "";
+    int length;
+    string args = $"https://passwordinator.onrender.com/";
+    bool isPasswordCreated = false;
+    bool numbers = false;
+    bool caps = false;
+    bool chars = false;
+
+    void CreatePassword()
+    {
+        CheckLength();
+        isPasswordCreated = true;
+        AddArgs();
+        pass = Password.GetPassword(args);
+    }
+
+    void AddArgs()
+    {
+        args = $"https://passwordinator.onrender.com/";
+        args += $"?len={length}";
+
+        if (numbers)
+            args += "&num=true";
+
+        if (caps)
+            args += "&caps=true";
+
+        if (chars)
+            args += "&char=true";
+    }
+
+    void CheckLength()
+    {
+        if (length < 8)
+        {
+            length = 8;
+        }
+        else if (length > 18)
+        {
+            length = 18;
+        }
+    }
+}

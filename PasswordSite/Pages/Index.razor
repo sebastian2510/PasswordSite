@@ -1,0 +1,13 @@
+﻿@page "/"
+
+@using PasswordSite.Data
+
+<PageTitle>Index</PageTitle>
+
+
+<p>Joke of the day:</p>
+<p>@joke</p>
+
+@code {
+    string joke = Joke.GetJoke();
+}
