@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace PasswordSite.Data
@@ -11,9 +12,14 @@ namespace PasswordSite.Data
             RestRequest request = new RestRequest();
             request.AddHeader("Accept", "application/json");
 
-            RestResponse response = client.Execute(request);
-            dynamic content = JObject.Parse(response.Content);
-            return content.joke;
+            string content = client.Execute(request).Content ?? throw new Exception("Content is null");
+            return JsonConvert.DeserializeObject<JokeAPI>(content).Joke;
         }
     }
+
+    internal class JokeAPI
+    {
+        public string? Joke { get; set; }
+    }
+
 }

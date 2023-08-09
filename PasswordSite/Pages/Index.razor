@@ -6,8 +6,11 @@
 
 
 <p>Joke of the day:</p>
-<p>@joke</p>
+@if (joke is not null && joke != string.Empty)
+{
+    <p>@joke</p>
+}
 
 @code {
-    string joke = Joke.GetJoke();
+    string? joke = Joke.GetJoke();
 }
